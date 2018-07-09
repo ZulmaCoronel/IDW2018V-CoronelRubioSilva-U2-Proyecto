@@ -40,3 +40,18 @@ rl.on('line', function (line) { //una funcion listen con una cadena que contiene
     SliceString(currentline,153,currentline.length)
   );
 });
+rl.on('close', function () {
+  var stream = fs.createWriteStream(filepathfinal);//para escribir, gurdar el archivo nuevo.
+  stream.once('open', function (fd) {//almacena los datos en un bufer interno para recuperarlos despues
+      for (var i = 0; i < newfile.length; i++) {
+          stream.write(newfile[i] + " \n"); //se recuperan los datos guardados
+      }
+      stream.end();
+      setTimeout(function () {
+          spinner.stop();
+      }, 1000);
+  });
+});
+function SliceString(string, a, b) {//extrae partes de una cadena, devuelve las partes extraidas en una cadena nueva
+  return  string.slice(a,b); // a=caracter donde empieza a extraer, b= caracter donde termina de extraer
+}
